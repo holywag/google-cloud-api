@@ -3,11 +3,15 @@ from apiclient.http import MediaFileUpload
 from google_oauth import GoogleOAuth
 
 class ValueRenderOption:
+    """https://developers.google.com/sheets/api/reference/rest/v4/ValueRenderOption
+    """
     FORMATTED_VALUE = 'FORMATTED_VALUE'
     UNFORMATTED_VALUE = 'UNFORMATTED_VALUE'
     FORMULA = 'FORMULA'
 
 class ValueInputOption:
+    """https://developers.google.com/sheets/api/reference/rest/v4/ValueInputOption
+    """
     INPUT_VALUE_OPTION_UNSPECIFIED = 'INPUT_VALUE_OPTION_UNSPECIFIED'
     RAW = 'RAW'
     USER_ENTERED = 'USER_ENTERED'
@@ -28,6 +32,7 @@ class GoogleSheetsApi:
         """
         request = self.service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id, range=range_, valueRenderOption=value_render_option)
+        # https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values#ValueRange
         value_range = request.execute()
         return value_range['values']
 
@@ -37,7 +42,7 @@ class GoogleSheetsApi:
         """
         value_range = {
             'range': range_,
-            'majorDimension': 'ROWS',
+            'majorDimension': 'ROWS',   # https://developers.google.com/sheets/api/reference/rest/v4/Dimension
             'values': array_of_rows
         }
         request = self.service.spreadsheets().values().update(
@@ -46,6 +51,7 @@ class GoogleSheetsApi:
             valueInputOption=value_input_option,
             includeValuesInResponse=include_values_in_response,
             responseValueRenderOption=response_value_render_option)
+        # https://developers.google.com/sheets/api/reference/rest/v4/UpdateValuesResponse
         update_values_response = request.execute()
         return update_values_response['updatedData']['values'] if include_values_in_response else None
 

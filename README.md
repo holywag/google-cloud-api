@@ -1,8 +1,10 @@
 # Google Cloud Platform APIs
 
 ```
-pip install -r requirements.txt
+pip install .
 ```
+
+# Examples
 
 ## Googel Drive: list all directories
 

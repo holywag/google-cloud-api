@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
-from google_sheets import GoogleSheetsApi, ValueRenderOption
-from google_oauth import GoogleOAuthScopes, GoogleOAuth
+from google_cloud.sheets import GoogleSheetsApi, ValueRenderOption
+from google_cloud.oauth import GoogleOAuthScopes, GoogleOAuth
 
 parser = argparse.ArgumentParser()
 parser.add_argument('spreadsheet_id')

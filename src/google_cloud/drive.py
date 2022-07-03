@@ -1,5 +1,4 @@
 import os.path
-from google_oauth import GoogleOAuth
 from googleapiclient.discovery import build
 from apiclient.http import MediaFileUpload
 

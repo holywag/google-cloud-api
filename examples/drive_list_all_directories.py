@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from google_drive import GoogleDriveApi
-from google_oauth import GoogleOAuthScopes, GoogleOAuth
+from google_cloud.drive import GoogleDriveApi
+from google_cloud.oauth import GoogleOAuthScopes, GoogleOAuth
 
 print('Listing all directories:')
 

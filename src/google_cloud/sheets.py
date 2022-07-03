@@ -1,6 +1,5 @@
 from googleapiclient.discovery import build
 from apiclient.http import MediaFileUpload
-from google_oauth import GoogleOAuth
 
 class ValueRenderOption:
     """https://developers.google.com/sheets/api/reference/rest/v4/ValueRenderOption

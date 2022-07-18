@@ -34,6 +34,35 @@ class GoogleDriveApi:
             if page_token is None:
                 return dirs
 
+    
+    def find_first_file(self, file_name, parent_directory_id=None, mime_type=None, include_trashed=False):
+        """https://developers.google.com/drive/api/v3/reference/files/list
+        """
+        # https://developers.google.com/drive/api/guides/ref-search-terms
+        query_string = f"name = '{file_name}' and trashed = {'true' if include_trashed else 'false'}"
+        if parent_directory_id is not None:
+            query_string = query_string + f" and '{parent_directory_id}' in parents"
+        if mime_type is not None:
+            query_string = query_string + f" and mimeType = '{mime_type}'"
+        query = self.service.files().list(
+            q=query_string,
+            pageSize=1,
+            fields='files(id)',
+            corpora='user')
+        # https://developers.google.com/drive/api/v3/reference/files#resource-representations
+        files = query.execute().get('files', [])
+        return files[0]['id'] if len(files) else None
+
+
+    def get_file_permissions(self, file_id):
+        """https://developers.google.com/drive/api/v3/reference/files/get
+        """
+        query = self.service.files().get(
+            fileId=file_id,
+            fields='permissions(role, type, emailAddress)')
+        # https://developers.google.com/drive/api/v3/reference/permissions#resource-representations
+        return query.execute().get('permissions', [])
+
 
     def upload_file_to_directory(self, file_path, mime_type, parent_directory_id):
         """https://developers.google.com/drive/api/v3/reference/files/create

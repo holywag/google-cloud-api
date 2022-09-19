@@ -5,8 +5,10 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 class GoogleOAuthScopes:
+    DRIVE = 'https://www.googleapis.com/auth/drive'
     DRIVE_FILE = 'https://www.googleapis.com/auth/drive.file'
     DRIVE_METADATA_READONLY = 'https://www.googleapis.com/auth/drive.metadata.readonly'
+    DOCS = 'https://www.googleapis.com/auth/documents'
     SHEETS = 'https://www.googleapis.com/auth/spreadsheets'
     SHEETS_READONLY = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 

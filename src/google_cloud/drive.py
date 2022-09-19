@@ -1,6 +1,11 @@
-import os.path
+import io, os.path
 from googleapiclient.discovery import build
-from apiclient.http import MediaFileUpload
+from apiclient.http import MediaFileUpload, MediaIoBaseDownload
+
+class MimeType:
+    """https://developers.google.com/drive/api/guides/ref-export-formats
+    """
+    PDF = 'application/pdf'
 
 class GoogleDriveApi:
     """Wrapper for 'drive' service of Google Cloud API.
@@ -8,6 +13,9 @@ class GoogleDriveApi:
         - list all directories
         - upload a file to a given directory
         - set file permissions
+        - copy file
+        - export file media in the specified format
+        - permanently delete file
     """
 
 
@@ -86,4 +94,27 @@ class GoogleDriveApi:
             'type': sharing_type
         }
         self.service.permissions().create(body=permissions_resource, fileId=file_id).execute()
+    
+    def copy(self, file_id, new_name=None):
+        """https://developers.google.com/drive/api/v3/reference/files/copy
+        """
+        files_resourse = self.service.files().copy(
+            body={ 'name': new_name } if new_name else None,
+            fileId=file_id).execute()
+        return files_resourse['id']
 
+    def export_media(self, file_id, mime_type):
+        """https://developers.google.com/drive/api/v3/reference/files/export
+        """
+        request = self.service.files().export_media(fileId=file_id, mimeType=mime_type)
+        file = io.BytesIO()
+        downloader = MediaIoBaseDownload(file, request)
+        done = False
+        while done is False:
+            status, done = downloader.next_chunk()
+        return file.getvalue()
+
+    def delete(self, file_id):
+        """https://developers.google.com/drive/api/v3/reference/files/delete
+        """
+        return self.service.files().delete(fileId=file_id).execute()
